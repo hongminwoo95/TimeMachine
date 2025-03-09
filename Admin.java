@@ -18,7 +18,6 @@ public class Admin  {
 		while (flag) {
 			System.out.println();
 			System.out.println("당신의 미래를 그려보시겠습니까?");
-			System.out.println();
 			System.out.println("10년, 20년 뒤 미래를 직접 선택할수 있습니다");
 			System.out.println();
 			System.out.println("1.미래등록 2.미래조회 3.미래수정 4.미래저장<유료>(!저장시 본인의 미래는 확정됩니다!)");
@@ -33,17 +32,18 @@ public class Admin  {
 		}
 	}
 	public void add() { // 등록
-		System.out.println("수정할 미래를 입력해주세요");
-		System.out.println("1.10년후, 2.20년후");
+		System.out.println("미래를 등록하시겠습니까?");
+		System.out.println("1.등록 2.취소");
+		PresentMe presentme = null;
 		int q = s.nextInt();
 		s.nextLine();
-		PresentMe presentme = null;
-		switch (q) {
-		case 1 : presentme = new Future10YearDTO(); break;
-		case 2 : presentme = new Future20YearDTO(); break;
-		}
-		presentme.add();
-		FList.add(presentme);
+			switch (q) {
+			case 1 : 
+				presentme = new Future20YearDTO();
+				presentme.add();
+				FList.add(presentme);
+				break;
+			}
 	}
 	public void modify() { // 수정1
 		System.out.println("본인 인증이 필요합니다");
@@ -52,31 +52,40 @@ public class Admin  {
 		System.out.println("생년월일 6자리를 입력해주세요");
 		int age = s.nextInt();
 		s.nextLine();
+		System.out.println("코드KEY를 입력해주세요");
+		String key = s.nextLine();
 		for (PresentMe uu : FList) {
-			if(uu.name.equals(name)  && uu.age==age) {
-				modify1();
+			if(uu.getName().equals(name)  && uu.getAge()==age && uu.getKey().equals(key)) {
+				modify1(uu);
 				break;
 			}else {
-				System.out.println("등록된 정보를 찾을수 없습니다 정보를 등록후 이용바랍니다");
+				System.out.println("!!!등록된 정보를 찾을수 없습니다 정보를 등록후 이용바랍니다!!!");
 			}
 		}
 	}
-	public void modify1() { // 수정2
-		System.out.println("수정할 미래년도를 선택해주세요");
-		System.out.println("1.10년후, 2.20년후");
+	public void modify1(PresentMe uu) { // 수정2
+		System.out.println("미래를 수정하시겠습니까?");
+		System.out.println("1.수정 2.뒤로가기");
 		int q = s.nextInt();
 		s.nextLine();
-		PresentMe presentme = null;
+		PresentMe presentme = uu; // <--- ArrayList 0번인덱스 객체주소를 유지해서 서브클래스 접근
 		switch (q) {
-		case 1 : presentme = new Future10YearDTO(); break;
-		case 2 : presentme = new Future20YearDTO(); break;
+		case 1 : presentme.modify(); break;
 		}
-		presentme.modify();
-		FList.add(presentme);
 	}
 	public void prt() { // 출력
+		System.out.println("본인 인증이 필요합니다");
+		System.out.println("이름을 입력해주세요");
+		String name = s.nextLine();
+		System.out.println("생년월일 6자리를 입력해주세요");
+		int age = s.nextInt();
+		s.nextLine();
+		System.out.println("코드KEY를 입력해주세요");
+		String key = s.nextLine();
 		for(PresentMe uu : FList) {
-			uu.prt();
+			if(uu.getName().equals(name) && uu.getAge()==age && uu.getKey().equals(key)) {
+				uu.prt();
+			}
 		}
 	}
-}
+}    
